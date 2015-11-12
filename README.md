@@ -1,4 +1,5 @@
 # Social Networking Kata
+Credits to [Sandro Mancuso](https://twitter.com/sandromancuso) and [Samir Talwar](https://twitter.com/SamirTalwar) for the [original idea](http://monospacedmonologues.com/post/49250842364/the-social-networking-kata).
 
 Implement a console-based social networking application (similar to Twitter) satisfying the scenarios below.
 
@@ -50,5 +51,3 @@ Implement a console-based social networking application (similar to Twitter) sat
 **IMPORTANT:**  Implement the requirements focusing on **writing the best code** you can produce.
 
 **CODE SUBMISSION:** Add the code to your own Github account and send us the link.
-
-Credits to Sandro Mancuso for the idea.
