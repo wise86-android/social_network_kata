@@ -10,22 +10,25 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.*;
 
-public class SocialNetworkConsole {
+public class SocialNetworkConsole  implements SocialNetworkContract.View {
+
 
     private static final String PUBLISH_MESSAGE = "->";
     private static final String SHOW_WALL = "wall";
     private static final String FOLLOWS = "follows";
-    private Map<String,List<Message>> userMessages = new HashMap<>();
-    private Map<String,List<String>> userFollowed = new HashMap<>();
+
 
     private PrintStream out;
     private InputStream in;
     private DateProvider dateProvider;
 
+    private SocialNetworkContract.Presenter presenter;
+
     public SocialNetworkConsole(InputStream input, OutputStream output, DateProvider dateProvider) {
         out = new PrintStream(output);
         in = input;
         this.dateProvider = dateProvider;
+        presenter = new SocialNetworkPresenter(this,dateProvider);
     }
 
     public void run(){
@@ -39,7 +42,7 @@ public class SocialNetworkConsole {
             }else if (command.contains(FOLLOWS)){
                 startFollowing(command);
             }else
-                printUserMessage(command);
+                presenter.showUserMessages(command);
 
         }
     }
@@ -48,46 +51,53 @@ public class SocialNetworkConsole {
         String[] parameter = command.split(FOLLOWS);
         String user = parameter[0].trim();
         String followed = parameter[1].trim();
-        if(!userFollowed.containsKey(user)){
-            userFollowed.put(user,new ArrayList<>());
-        }
-        userFollowed.get(user).add(followed);
+        presenter.startFollow(user,followed);
     }
 
     private void showWall(String command) {
         String[] parameter = command.split(SHOW_WALL);
         String user = parameter[0].trim();
-        PassedTimeFormatter formatter= new PassedTimeFormatter(dateProvider.now());
-        List<Message> messages =new ArrayList<>( userMessages.get(user));
-        List<String> following = userFollowed.get(user);
-        if(following!=null && !following.isEmpty())
-            for(String followedUser : following){
-                messages.addAll(userMessages.get(followedUser));
-            }
-        messages.sort(Comparator.comparing(Message::getPublicisingTime).reversed());
-        for(Message msg : messages){
-            out.println(msg.getAuthor().getName()+" - "+msg.getContent()+"("+formatter.format(msg.getPublicisingTime())+")");
-        }
+        presenter.showWallForUser(user);
     }
 
-    private void printUserMessage(String user) {
-        List<Message> messages = userMessages.get(user);
-        if(messages==null || messages.isEmpty())
-            return;
-        PassedTimeFormatter formatter= new PassedTimeFormatter(dateProvider.now());
-        messages.sort(Comparator.comparing(Message::getPublicisingTime).reversed());
-        for(Message msg : messages){
-            out.println(msg.getContent()+"("+formatter.format(msg.getPublicisingTime())+")");
-        }
-    }
 
     private void insertMessage(String command) {
         String[] parameter = command.split(PUBLISH_MESSAGE);
         String user = parameter[0].trim();
         String content = parameter[1].trim();
-        if(!userMessages.containsKey(user)){
-            userMessages.put(user,new ArrayList<>());
+        presenter.publishMessage(user,content);
+    }
+
+    @Override
+    public void displayUserMessages(List<Message> messages) {
+        if (messages == null || messages.isEmpty())
+            return;
+        PassedTimeFormatter dateFormatter = new PassedTimeFormatter(dateProvider.now());
+        StringBuilder wallContent = new StringBuilder();
+        for (Message msg : messages) {
+            wallContent
+                    .append(msg.getContent())
+                    .append(" ( ")
+                    .append(dateFormatter.format(msg.getPublicisingTime()))
+                    .append(" )\n");
         }
-        userMessages.get(user).add(new Message(new User(user),content,dateProvider.now()));
+        out.print(wallContent);
+    }
+
+    @Override
+    public void displayUserWallMessages(List<Message> messages) {
+        if (messages == null || messages.isEmpty())
+            return;
+        PassedTimeFormatter dateFormatter = new PassedTimeFormatter(dateProvider.now());
+        StringBuilder wallContent = new StringBuilder();
+        for (Message msg : messages) {
+            wallContent.append(msg.getAuthor().getName())
+                    .append(" - ")
+                    .append(msg.getContent())
+                    .append(" ( ")
+                    .append(dateFormatter.format(msg.getPublicisingTime()))
+                    .append(" )\n");
+        }
+        out.print(wallContent);
     }
 }
