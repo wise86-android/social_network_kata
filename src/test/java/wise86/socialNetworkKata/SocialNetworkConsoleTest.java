@@ -34,11 +34,12 @@ public class SocialNetworkConsoleTest {
     @Before
     public void initStreams() throws IOException {
 
+        //each time it is indicated responds with 1 seconds more
         when(dateProvider.now()).thenAnswer(new Answer<Date>() {
-            private int nInvocaton = 0;
+            private int nInvocations = 0;
             @Override
             public Date answer(InvocationOnMock invocation) throws Throwable {
-                return new Date(nInvocaton++*100);
+                return new Date(nInvocations++*1000);
             }
         });
 
@@ -61,7 +62,7 @@ public class SocialNetworkConsoleTest {
     }
 
     @Test
-    public void writingTheUserNamePrintTheMessages() {
+    public void writingTheUserNamePrintTheMessagesOrderByMostRecentFirst() {
         String user = "Alice";
         String message1 = "message1";
         String message2 = "message2";
@@ -88,7 +89,7 @@ public class SocialNetworkConsoleTest {
     }
 
     @Test
-    public void theWallCommandShowTheUserAndTheFollowedUserMessagesInCronologialOrder() {
+    public void theWallCommandShowTheUserAndTheFollowedUserMessagesOrderByMostRecentFirst() {
         String userA = "Alice";
         String userAMessage = "first message By Alice";
         String userAMessage2 = "second message By Alice";

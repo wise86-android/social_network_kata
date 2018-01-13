@@ -6,7 +6,7 @@ public class PassedTimeFormatter {
     private Date referenceTime;
 
     private enum TimeUnit {
-        SECONDS(100),
+        SECONDS(1000),
         MINUTE(60*SECONDS.inMilliSeconds),
         HOURS(60*MINUTE.inMilliSeconds),
         DAY(24*HOURS.inMilliSeconds),
