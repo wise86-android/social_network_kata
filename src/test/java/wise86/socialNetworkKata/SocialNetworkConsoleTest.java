@@ -11,7 +11,7 @@ import org.mockito.stubbing.Answer;
 import wise86.socialNetworkKata.util.DateProvider;
 
 import java.io.*;
-import java.util.*;
+import java.util.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
@@ -37,16 +37,17 @@ public class SocialNetworkConsoleTest {
         //each time it is indicated responds with 1 seconds more
         when(dateProvider.now()).thenAnswer(new Answer<Date>() {
             private int nInvocations = 0;
+
             @Override
             public Date answer(InvocationOnMock invocation) throws Throwable {
-                return new Date(nInvocations++*1000);
+                return new Date(nInvocations++ * 1000);
             }
         });
 
         outputStream.connect(socialNetworkInput);
         socialNewtorkInputConsole = new PrintStream(outputStream);
 
-        socialNetwork = new SocialNetworkConsole(socialNetworkInput, socialNetworkOutput,dateProvider);
+        socialNetwork = new SocialNetworkConsole(socialNetworkInput, socialNetworkOutput, dateProvider);
     }
 
     private void assertNoOutputInteraction() {
@@ -75,8 +76,8 @@ public class SocialNetworkConsoleTest {
 
         String outStr = socialNetworkOutput.toString();
 
-        assertThat(outStr, containsInOrder( message2, "1 second ago",
-                 message1, "2 seconds ago"));
+        assertThat(outStr, containsInOrder(message2, "1 second ago",
+                message1, "2 seconds ago"));
 
     }
 

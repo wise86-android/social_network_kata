@@ -3,9 +3,9 @@ import wise86.socialNetworkKata.util.DateProvider;
 
 public class SocialNetworkMain {
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
         DateProvider dateProvider = new DateProvider();
-        SocialNetworkConsole socialNetwork = new SocialNetworkConsole(System.in,System.out,dateProvider);
+        SocialNetworkConsole socialNetwork = new SocialNetworkConsole(System.in, System.out, dateProvider);
 
         socialNetwork.run();
     }

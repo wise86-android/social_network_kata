@@ -10,7 +10,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import wise86.socialNetworkKata.data.Message;
-import wise86.socialNetworkKata.data.User;
 import wise86.socialNetworkKata.util.DateProvider;
 
 import java.util.Arrays;
@@ -41,13 +40,14 @@ public class SocialNetworkPresenterTest {
         //each time it is indicated responds with 1 seconds more
         when(dateProvider.now()).thenAnswer(new Answer<Date>() {
             private int nInvocations = 0;
+
             @Override
             public Date answer(InvocationOnMock invocation) throws Throwable {
-                return new Date(nInvocations++*1000);
+                return new Date(nInvocations++ * 1000);
             }
         });
 
-        socialNetwork = new SocialNetworkPresenter( view, dateProvider);
+        socialNetwork = new SocialNetworkPresenter(view, dateProvider);
     }
 
     @Test
@@ -76,13 +76,13 @@ public class SocialNetworkPresenterTest {
         String userC = "userC";
         String messageC_1 = "MessageC_1";
 
-        socialNetwork.publishMessage(userA,messageA_1);
-        socialNetwork.publishMessage(userB,messageB_1);
-        socialNetwork.publishMessage(userA,messageA_2);
-        socialNetwork.publishMessage(userB,messageB_2);
-        socialNetwork.publishMessage(userC,messageC_1);
+        socialNetwork.publishMessage(userA, messageA_1);
+        socialNetwork.publishMessage(userB, messageB_1);
+        socialNetwork.publishMessage(userA, messageA_2);
+        socialNetwork.publishMessage(userB, messageB_2);
+        socialNetwork.publishMessage(userC, messageC_1);
 
-        socialNetwork.startFollow(userA,userB);
+        socialNetwork.startFollow(userA, userB);
 
         socialNetwork.showWallForUser(userA);
         verify(view).displayUserWallMessages(messagesListCaptor.capture());
@@ -90,10 +90,10 @@ public class SocialNetworkPresenterTest {
         List<Message> userAWall = messagesListCaptor.getValue();
 
         assertThat(userAWall, hasSize(4));
-        assertThat(userAWall,containsMessageWith(userA,messageA_1));
-        assertThat(userAWall,containsMessageWith(userA,messageA_2));
-        assertThat(userAWall,containsMessageWith(userB,messageB_1));
-        assertThat(userAWall,containsMessageWith(userB,messageB_2));
+        assertThat(userAWall, containsMessageWith(userA, messageA_1));
+        assertThat(userAWall, containsMessageWith(userA, messageA_2));
+        assertThat(userAWall, containsMessageWith(userB, messageB_1));
+        assertThat(userAWall, containsMessageWith(userB, messageB_2));
 
         assertTrue(areSortedByDecreasingDate(userAWall));
     }
@@ -112,26 +112,27 @@ public class SocialNetworkPresenterTest {
 
     }
 
-    private Message mockMessage( Date publishingDate) {
+    private Message mockMessage(Date publishingDate) {
         Message msg = mock(Message.class);
         when(msg.getPublicisingTime()).thenReturn(publishingDate);
         return msg;
     }
+
     @Test
     public void returnTrueIfTheMessageAreOrderedByDescendingDate() {
         List<Message> wrongList = Arrays.asList(
                 mockMessage(new Date(2)),
-                mockMessage( new Date(1)),
-                mockMessage( new Date(3)),
-                mockMessage( new Date(4)));
+                mockMessage(new Date(1)),
+                mockMessage(new Date(3)),
+                mockMessage(new Date(4)));
 
         assertFalse(areSortedByDecreasingDate(wrongList));
 
         List<Message> goodList = Arrays.asList(
-                mockMessage( new Date(4)),
-                mockMessage( new Date(3)),
-                mockMessage( new Date(2)),
-                mockMessage( new Date(1)));
+                mockMessage(new Date(4)),
+                mockMessage(new Date(3)),
+                mockMessage(new Date(2)),
+                mockMessage(new Date(1)));
         assertTrue(areSortedByDecreasingDate(goodList));
     }
 

@@ -1,24 +1,27 @@
 package wise86.socialNetworkKata.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 
 public class PassedTimeFormatter {
     private Date referenceTime;
 
     private enum TimeUnit {
         SECONDS(1000),
-        MINUTE(60*SECONDS.inMilliSeconds),
-        HOURS(60*MINUTE.inMilliSeconds),
-        DAY(24*HOURS.inMilliSeconds),
-        YEARS(365*DAY.inMilliSeconds);
+        MINUTE(60 * SECONDS.inMilliSeconds),
+        HOURS(60 * MINUTE.inMilliSeconds),
+        DAY(24 * HOURS.inMilliSeconds),
+        YEARS(365 * DAY.inMilliSeconds);
 
         private final long inMilliSeconds;
 
-        TimeUnit(long conversionRate){
-            inMilliSeconds=conversionRate;
+        TimeUnit(long conversionRate) {
+            inMilliSeconds = conversionRate;
         }
 
-        long toMilliseconds(){
+        long toMilliseconds() {
             return inMilliSeconds;
         }
     }
@@ -40,7 +43,7 @@ public class PassedTimeFormatter {
     }
 
     private static String getPluralUnitString(TimeUnit unit) {
-        return getSingleUnitString(unit)+"s";
+        return getSingleUnitString(unit) + "s";
     }
 
 
@@ -48,22 +51,22 @@ public class PassedTimeFormatter {
         this.referenceTime = referenceTime;
     }
 
-    private TimeUnit getBiggerUnitFitting(long milliseconds){
+    private TimeUnit getBiggerUnitFitting(long milliseconds) {
         ArrayList<TimeUnit> units = new ArrayList<>(Arrays.asList(TimeUnit.values()));
         units.sort(Comparator.comparingLong(TimeUnit::toMilliseconds).reversed());
-        for (TimeUnit unit : units){
-            if(milliseconds>=unit.toMilliseconds())
+        for (TimeUnit unit : units) {
+            if (milliseconds >= unit.toMilliseconds())
                 return unit;
         }
-        return units.get(units.size()-1);
+        return units.get(units.size() - 1);
     }
 
-    public String format(Date date){
-        long timeDiffMs = referenceTime.getTime()-date.getTime();
+    public String format(Date date) {
+        long timeDiffMs = referenceTime.getTime() - date.getTime();
         TimeUnit unit = getBiggerUnitFitting(timeDiffMs);
-        long timeUnit = timeDiffMs/unit.toMilliseconds();
+        long timeUnit = timeDiffMs / unit.toMilliseconds();
         String unitName = getPluralUnitString(unit);
-        if(timeUnit==1)
+        if (timeUnit == 1)
             unitName = getSingleUnitString(unit);
         return timeUnit + " " + unitName + " ago";
     }

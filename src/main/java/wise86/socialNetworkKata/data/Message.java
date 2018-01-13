@@ -14,9 +14,10 @@ public class Message {
 
     /**
      * contains the message data
-     * @param author how write the message
+     *
+     * @param author  how write the message
      * @param content the message content
-     * @param now when the message was write
+     * @param now     when the message was write
      */
     public Message(User author, String content, Date now) {
         this.author = author;

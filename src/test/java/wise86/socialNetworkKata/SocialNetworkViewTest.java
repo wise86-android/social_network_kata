@@ -32,7 +32,7 @@ public class SocialNetworkViewTest {
 
     @Before
     public void initView() {
-        view = new SocialNetworkConsole(null,outStream, dateProvider);
+        view = new SocialNetworkConsole(null, outStream, dateProvider);
     }
 
 

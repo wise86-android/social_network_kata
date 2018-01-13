@@ -1,16 +1,16 @@
 package wise86.socialNetworkKata;
 
 import wise86.socialNetworkKata.data.Message;
-import wise86.socialNetworkKata.data.User;
 import wise86.socialNetworkKata.util.DateProvider;
 import wise86.socialNetworkKata.util.PassedTimeFormatter;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
-public class SocialNetworkConsole  implements SocialNetworkContract.View {
+public class SocialNetworkConsole implements SocialNetworkContract.View {
 
 
     private static final String PUBLISH_MESSAGE = "->";
@@ -28,20 +28,20 @@ public class SocialNetworkConsole  implements SocialNetworkContract.View {
         out = new PrintStream(output);
         in = input;
         this.dateProvider = dateProvider;
-        presenter = new SocialNetworkPresenter(this,dateProvider);
+        presenter = new SocialNetworkPresenter(this, dateProvider);
     }
 
-    public void run(){
+    public void run() {
         Scanner sc = new Scanner(in);
-        while (sc.hasNextLine()){
+        while (sc.hasNextLine()) {
             String command = sc.nextLine();
-            if(command.contains(PUBLISH_MESSAGE)){
+            if (command.contains(PUBLISH_MESSAGE)) {
                 insertMessage(command);
-            }else if (command.contains(SHOW_WALL)){
+            } else if (command.contains(SHOW_WALL)) {
                 showWall(command);
-            }else if (command.contains(FOLLOWS)){
+            } else if (command.contains(FOLLOWS)) {
                 startFollowing(command);
-            }else
+            } else
                 presenter.showUserMessages(command);
 
         }
@@ -51,7 +51,7 @@ public class SocialNetworkConsole  implements SocialNetworkContract.View {
         String[] parameter = command.split(FOLLOWS);
         String user = parameter[0].trim();
         String followed = parameter[1].trim();
-        presenter.startFollow(user,followed);
+        presenter.startFollow(user, followed);
     }
 
     private void showWall(String command) {
@@ -65,7 +65,7 @@ public class SocialNetworkConsole  implements SocialNetworkContract.View {
         String[] parameter = command.split(PUBLISH_MESSAGE);
         String user = parameter[0].trim();
         String content = parameter[1].trim();
-        presenter.publishMessage(user,content);
+        presenter.publishMessage(user, content);
     }
 
     @Override

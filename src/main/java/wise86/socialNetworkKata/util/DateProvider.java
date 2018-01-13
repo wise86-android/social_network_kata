@@ -9,6 +9,7 @@ public class DateProvider {
 
     /**
      * create a date representing the current system time.
+     *
      * @return get the current time
      */
     public Date now() {

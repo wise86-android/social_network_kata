@@ -5,11 +5,10 @@ import wise86.socialNetworkKata.data.Message;
 import wise86.socialNetworkKata.data.User;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static wise86.socialNetworkKata.testUtil.ContainMessageMatcher.containsMessageWith;
@@ -24,15 +23,15 @@ public class ContainMessageMatcherTest {
     }
 
     @Test
-    public void theMetcherFoundCorrectlyTheMessage(){
+    public void theMetcherFoundCorrectlyTheMessage() {
         List<Message> messages = Arrays.asList(
-                mockMessage("userA","msgA"),
-                mockMessage("userC","msgC"),
-                mockMessage("userB","msgB")
+                mockMessage("userA", "msgA"),
+                mockMessage("userC", "msgC"),
+                mockMessage("userB", "msgB")
         );
 
-        assertThat(messages,containsMessageWith("userC","msgC"));
-        assertThat(messages,not(containsMessageWith("userC","msgA")));
+        assertThat(messages, containsMessageWith("userC", "msgC"));
+        assertThat(messages, not(containsMessageWith("userC", "msgA")));
     }
 
 }

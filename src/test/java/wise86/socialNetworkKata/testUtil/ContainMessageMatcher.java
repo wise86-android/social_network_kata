@@ -7,7 +7,7 @@ import wise86.socialNetworkKata.data.Message;
 
 import java.util.Collection;
 
-public class ContainMessageMatcher extends TypeSafeMatcher<Collection<Message>>{
+public class ContainMessageMatcher extends TypeSafeMatcher<Collection<Message>> {
 
     private final String userName;
     private final String messageContent;
@@ -19,8 +19,8 @@ public class ContainMessageMatcher extends TypeSafeMatcher<Collection<Message>>{
 
     @Override
     protected boolean matchesSafely(Collection<Message> items) {
-        for(Message msg : items){
-            if(msg.getAuthor().getName().equals(userName) &&
+        for (Message msg : items) {
+            if (msg.getAuthor().getName().equals(userName) &&
                     msg.getContent().equals(messageContent))
                 return true;
         }
@@ -29,10 +29,10 @@ public class ContainMessageMatcher extends TypeSafeMatcher<Collection<Message>>{
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("No message from "+userName+" with content: "+messageContent);
+        description.appendText("No message from " + userName + " with content: " + messageContent);
     }
 
-    public static Matcher<Collection<Message>> containsMessageWith(String userName,String content) {
-        return new ContainMessageMatcher(userName,content);
+    public static Matcher<Collection<Message>> containsMessageWith(String userName, String content) {
+        return new ContainMessageMatcher(userName, content);
     }
 }
