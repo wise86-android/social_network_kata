@@ -6,10 +6,17 @@ import org.hamcrest.TypeSafeMatcher;
 
 import java.util.Arrays;
 
+/**
+ * Matcher that check that a string contains all the substring in the same order as the one
+ * that was used when build the matcher
+ */
 public class ContainsSubStringInOrderMatcher extends TypeSafeMatcher<String> {
 
     private String matches[];
 
+    /**
+     * @param matches substrings searched in the string
+     */
     private ContainsSubStringInOrderMatcher(String... matches) {
         this.matches = matches;
     }

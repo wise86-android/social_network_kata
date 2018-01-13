@@ -2,7 +2,7 @@ package wise86.socialNetworkKata.repository.onMemory;
 
 import org.junit.Test;
 import wise86.socialNetworkKata.data.User;
-import wise86.socialNetworkKata.repository.FollowerRepository;
+import wise86.socialNetworkKata.repository.FollowingRepository;
 
 import java.util.List;
 
@@ -12,18 +12,18 @@ import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
-public class MemoryFollowerRepositoryTest {
+public class MemoryFollowingRepositoryTest {
 
     private static final User USER_A = new User("UserA");
     private static final User USER_B = new User("UserB");
     private static final User USER_C = new User("UserC");
 
-    private FollowerRepository repository = new MemoryFollowerRepository();
+    private FollowingRepository repository = new MemoryFollowingRepository();
 
 
     @Test
-    public void aFollwoerRelationCanBeAddAndRetrived() {
-        repository.addFollowerRelation(USER_A, USER_B);
+    public void aFallingRelationCanBeAddAndRetrieved() {
+        repository.addFollowingRelation(USER_A, USER_B);
         List<User> followedByA = repository.getUsersFollowedBy(USER_A);
         assertThat(followedByA, is(not(empty())));
 
@@ -32,8 +32,8 @@ public class MemoryFollowerRepositoryTest {
 
     @Test
     public void anUserCanFollowMoreUsers() {
-        repository.addFollowerRelation(USER_A, USER_B);
-        repository.addFollowerRelation(USER_A, USER_C);
+        repository.addFollowingRelation(USER_A, USER_B);
+        repository.addFollowingRelation(USER_A, USER_C);
         List<User> followedByA = repository.getUsersFollowedBy(USER_A);
         assertThat(followedByA, is(not(empty())));
 
@@ -42,10 +42,10 @@ public class MemoryFollowerRepositoryTest {
 
     @Test
     public void onlyTheFollowerOfTheUserAreReturned() {
-        repository.addFollowerRelation(USER_A, USER_B);
-        repository.addFollowerRelation(USER_A, USER_C);
-        repository.addFollowerRelation(USER_B, USER_C);
-        repository.addFollowerRelation(USER_C, USER_A);
+        repository.addFollowingRelation(USER_A, USER_B);
+        repository.addFollowingRelation(USER_A, USER_C);
+        repository.addFollowingRelation(USER_B, USER_C);
+        repository.addFollowingRelation(USER_C, USER_A);
 
         List<User> followedByB = repository.getUsersFollowedBy(USER_B);
         assertThat(followedByB, is(not(empty())));
@@ -55,13 +55,13 @@ public class MemoryFollowerRepositoryTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void theListReturnedIsReadOnly() {
-        repository.addFollowerRelation(USER_A, USER_B);
+        repository.addFollowingRelation(USER_A, USER_B);
         repository.getUsersFollowedBy(USER_A).add(USER_C);
     }
 
     @Test
-    public void theListIsEmptyTheUserDoesntFollowAnyone() {
-        repository.addFollowerRelation(USER_A, USER_B);
+    public void theListIsEmptyTheUserDoesNotFollowAnyone() {
+        repository.addFollowingRelation(USER_A, USER_B);
         assertThat(repository.getUsersFollowedBy(USER_B), is(empty()));
     }
 

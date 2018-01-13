@@ -27,7 +27,6 @@ public class SocialNetworkViewTest {
     private
     DateProvider dateProvider;
 
-
     private SocialNetworkContract.View view;
 
     @Before

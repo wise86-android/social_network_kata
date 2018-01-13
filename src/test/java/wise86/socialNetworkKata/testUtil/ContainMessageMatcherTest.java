@@ -5,6 +5,7 @@ import wise86.socialNetworkKata.data.Message;
 import wise86.socialNetworkKata.data.User;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.core.IsNot.not;
@@ -23,7 +24,7 @@ public class ContainMessageMatcherTest {
     }
 
     @Test
-    public void theMetcherFoundCorrectlyTheMessage() {
+    public void theMatcherFoundCorrectlyTheMessage() {
         List<Message> messages = Arrays.asList(
                 mockMessage("userA", "msgA"),
                 mockMessage("userC", "msgC"),
@@ -31,7 +32,23 @@ public class ContainMessageMatcherTest {
         );
 
         assertThat(messages, containsMessageWith("userC", "msgC"));
+    }
+
+    @Test
+    public void theCorrectUserIsNotEnoughToHaveAMatch() {
+        List<Message> messages = Collections.singletonList(
+                mockMessage("userC", "msgC")
+        );
+
         assertThat(messages, not(containsMessageWith("userC", "msgA")));
     }
 
+    @Test
+    public void theCorrectMessageIsNotEnoughToHaveAMatch() {
+        List<Message> messages = Collections.singletonList(
+                mockMessage("userA", "msgA")
+        );
+
+        assertThat(messages, not(containsMessageWith("userC", "msgA")));
+    }
 }

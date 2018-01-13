@@ -7,11 +7,19 @@ import wise86.socialNetworkKata.data.Message;
 
 import java.util.Collection;
 
+/**
+ * Matcher that check if in a collection of messages there is one message with a specific author and a specific
+ * content
+ */
 public class ContainMessageMatcher extends TypeSafeMatcher<Collection<Message>> {
 
     private final String userName;
     private final String messageContent;
 
+    /**
+     * @param userName       searched author name
+     * @param messageContent searched message content
+     */
     public ContainMessageMatcher(String userName, String messageContent) {
         this.userName = userName;
         this.messageContent = messageContent;

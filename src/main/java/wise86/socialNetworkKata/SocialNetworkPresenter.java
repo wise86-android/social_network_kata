@@ -3,7 +3,7 @@ package wise86.socialNetworkKata;
 import wise86.socialNetworkKata.data.Message;
 import wise86.socialNetworkKata.data.User;
 import wise86.socialNetworkKata.repository.SocialNetworkRepository;
-import wise86.socialNetworkKata.repository.onMemory.MemoryFollowerRepository;
+import wise86.socialNetworkKata.repository.onMemory.MemoryFollowingRepository;
 import wise86.socialNetworkKata.repository.onMemory.MemoryMessageRepository;
 import wise86.socialNetworkKata.util.DateProvider;
 
@@ -13,18 +13,30 @@ import java.util.List;
 
 public class SocialNetworkPresenter implements SocialNetworkContract.Presenter {
 
+
     private SocialNetworkRepository socialNetworkRepository = new SocialNetworkRepository(
             new MemoryMessageRepository(),
-            new MemoryFollowerRepository());
+            new MemoryFollowingRepository());
 
     private SocialNetworkContract.View view;
     private DateProvider dateProvider;
 
+    /**
+     * build the social network presenter
+     *
+     * @param view         object what will display the command results
+     * @param dateProvider object used to know the current time
+     */
     public SocialNetworkPresenter(SocialNetworkContract.View view, DateProvider dateProvider) {
         this.view = view;
         this.dateProvider = dateProvider;
     }
 
+    /**
+     * sort the messages list to have in position 0 the most recent post
+     *
+     * @param messages list to message to sort, after the function call the list content will be sorted
+     */
     private void sortByMostRecentFirst(List<Message> messages) {
         messages.sort(Comparator.comparing(Message::getPublicisingTime).reversed());
     }
@@ -44,9 +56,10 @@ public class SocialNetworkPresenter implements SocialNetworkContract.Presenter {
         view.displayUserMessages(sortableMessages);
     }
 
-    public void startFollow(String userName, String followedName) {
+    @Override
+    public void startFollow(String userName, String followingName) {
         User user = new User(userName);
-        User followed = new User(followedName);
+        User followed = new User(followingName);
         socialNetworkRepository.addFollowerRelation(user, followed);
     }
 

@@ -7,29 +7,58 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Class exposing the social network data
+ */
 public class SocialNetworkRepository {
 
     private final MessageRepository messages;
-    private final FollowerRepository followerRelation;
+    private final FollowingRepository followingRelation;
 
-    public SocialNetworkRepository(MessageRepository messages, FollowerRepository followerRelation) {
+    /**
+     * @param messages            class used to store the user messages
+     * @param followingRepository class use to store the following relationship
+     */
+    public SocialNetworkRepository(MessageRepository messages, FollowingRepository followingRepository) {
         this.messages = messages;
-        this.followerRelation = followerRelation;
+        this.followingRelation = followingRepository;
     }
 
-
+    /**
+     * insert a message in the social network
+     *
+     * @param msg message to store in the social network
+     */
     public void publish(Message msg) {
         messages.addMessage(msg);
     }
 
+    /**
+     * get all the messages published by a user
+     *
+     * @param user user to query
+     * @return messages published by the user
+     */
     public List<Message> getMessagesFromUser(User user) {
         return messages.getUserMessages(user);
     }
 
-    public void addFollowerRelation(User user, User followed) {
-        followerRelation.addFollowerRelation(user, followed);
+    /**
+     * store in the social network that the user $user will follow the user $following
+     *
+     * @param user      user that follow
+     * @param following following user
+     */
+    public void addFollowerRelation(User user, User following) {
+        followingRelation.addFollowingRelation(user, following);
     }
 
+    /**
+     * get all the message published by the users
+     *
+     * @param users list of user
+     * @return all the messages posted by the users in the users list.
+     */
     private List<Message> getAllMessagesFromUsers(Collection<User> users) {
         ArrayList<Message> messagesCollection = new ArrayList<>();
         for (User user : users) {
@@ -41,8 +70,14 @@ public class SocialNetworkRepository {
     }
 
 
+    /**
+     * get the user wall messages
+     *
+     * @param user user to query
+     * @return user's massages and messages form all the users that it follow
+     */
     public List<Message> getWallMessageForUser(User user) {
-        List<User> followingUserList = followerRelation.getUsersFollowedBy(user);
+        List<User> followingUserList = followingRelation.getUsersFollowedBy(user);
         List<Message> wallMessages = new ArrayList<>(messages.getUserMessages(user));
         if (followingUserList != null) {
             wallMessages.addAll(getAllMessagesFromUsers(followingUserList));

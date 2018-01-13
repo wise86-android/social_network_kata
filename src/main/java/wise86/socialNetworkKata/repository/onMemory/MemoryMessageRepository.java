@@ -6,6 +6,9 @@ import wise86.socialNetworkKata.repository.MessageRepository;
 
 import java.util.*;
 
+/**
+ * Class realizing an in memory storage of the social network's messages
+ */
 public class MemoryMessageRepository implements MessageRepository {
 
     private Map<User, ArrayList<Message>> userMessages = new HashMap<>();

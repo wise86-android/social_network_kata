@@ -7,9 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import wise86.socialNetworkKata.data.Message;
 import wise86.socialNetworkKata.data.User;
-import wise86.socialNetworkKata.repository.FollowerRepository;
-import wise86.socialNetworkKata.repository.MessageRepository;
-import wise86.socialNetworkKata.repository.SocialNetworkRepository;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,13 +24,13 @@ public class SocialNetworkRepositoryTest {
     private MessageRepository messageRepository;
 
     @Mock
-    private FollowerRepository followerRepository;
+    private FollowingRepository followingRepository;
 
     private SocialNetworkRepository socialNetwork;
 
     @Before
     public void createSocialNetwork() {
-        socialNetwork = new SocialNetworkRepository(messageRepository, followerRepository);
+        socialNetwork = new SocialNetworkRepository(messageRepository, followingRepository);
     }
 
 
@@ -52,7 +49,7 @@ public class SocialNetworkRepositoryTest {
 
         socialNetwork.addFollowerRelation(user, followed);
 
-        verify(followerRepository).addFollowerRelation(user, followed);
+        verify(followingRepository).addFollowingRelation(user, followed);
     }
 
 
@@ -81,7 +78,7 @@ public class SocialNetworkRepositoryTest {
 
         when(messageRepository.getUserMessages(userA)).thenReturn(userAMessages);
         when(messageRepository.getUserMessages(userB)).thenReturn(userBMessages);
-        when(followerRepository.getUsersFollowedBy(userA)).thenReturn(Collections.singletonList(userB));
+        when(followingRepository.getUsersFollowedBy(userA)).thenReturn(Collections.singletonList(userB));
 
         List<Message> wallA = socialNetwork.getWallMessageForUser(userA);
         assertThat(wallA, hasSize(userAMessages.size() + userBMessages.size()));

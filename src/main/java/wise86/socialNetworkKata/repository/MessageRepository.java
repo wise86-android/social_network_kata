@@ -7,7 +7,7 @@ import wise86.socialNetworkKata.data.User;
 import java.util.List;
 
 /**
- * Class manage a collection of messages
+ * Interface to manage a collection of messages
  */
 public interface MessageRepository {
 

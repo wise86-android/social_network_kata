@@ -32,7 +32,7 @@ public class MemoryMessageRepositoryTest {
     }
 
     @Test
-    public void theMessageAddedCanBeRetrivedByTheGet() {
+    public void theMessageAddedCanBeRetrievedByTheGet() {
 
         Message msg = new Message(USER_A, "content", FAKE_DATE);
         repository.addMessage(msg);
