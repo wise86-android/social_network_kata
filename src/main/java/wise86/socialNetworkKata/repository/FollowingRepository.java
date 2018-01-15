@@ -10,12 +10,12 @@ import java.util.List;
 public interface FollowingRepository {
 
     /**
-     * store in the social network that the user $user will follow the user $following
+     * store in the social network that the user $user will follow the user $followed
      *
      * @param user      user that follow
-     * @param following following user
+     * @param followed followed user
      */
-    void addFollowingRelation(User user, User following);
+    void addFollowingRelation(User user, User followed);
 
     /**
      * get all the users following the specific user

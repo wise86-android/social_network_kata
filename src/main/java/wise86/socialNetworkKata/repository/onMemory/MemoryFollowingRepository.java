@@ -13,10 +13,10 @@ public class MemoryFollowingRepository implements FollowingRepository {
     private Map<User, List<User>> followingRelation = new HashMap<>();
 
     @Override
-    public void addFollowingRelation(User user, User following) {
+    public void addFollowingRelation(User user, User followed) {
         if (!followingRelation.containsKey(user))
             followingRelation.put(user, new ArrayList<>());
-        followingRelation.get(user).add(following);
+        followingRelation.get(user).add(followed);
     }
 
     @Override

@@ -51,6 +51,7 @@ public class SocialNetworkPresenter implements SocialNetworkContract.Presenter {
     @Override
     public void showUserMessages(String user) {
         List<Message> messages = socialNetworkRepository.getMessagesFromUser(new User(user));
+        //messages is read only, create a new list to be able to sort it
         List<Message> sortableMessages = new ArrayList<>(messages);
         sortByMostRecentFirst(sortableMessages);
         view.displayUserMessages(sortableMessages);

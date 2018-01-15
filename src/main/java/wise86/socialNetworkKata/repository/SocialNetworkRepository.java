@@ -44,13 +44,13 @@ public class SocialNetworkRepository {
     }
 
     /**
-     * store in the social network that the user $user will follow the user $following
+     * store in the social network that the user $user will follow the user $followed
      *
      * @param user      user that follow
-     * @param following following user
+     * @param followed followed user
      */
-    public void addFollowerRelation(User user, User following) {
-        followingRelation.addFollowingRelation(user, following);
+    public void addFollowerRelation(User user, User followed) {
+        followingRelation.addFollowingRelation(user, followed);
     }
 
     /**

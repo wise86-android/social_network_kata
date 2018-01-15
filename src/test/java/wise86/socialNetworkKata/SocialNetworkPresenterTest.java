@@ -6,10 +6,9 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 import wise86.socialNetworkKata.data.Message;
+import wise86.socialNetworkKata.testUtil.DateProviderMockUtil;
 import wise86.socialNetworkKata.util.DateProvider;
 
 import java.util.Arrays;
@@ -21,14 +20,15 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static wise86.socialNetworkKata.testUtil.ContainMessageMatcher.containsMessageWith;
+import static wise86.socialNetworkKata.testUtil.MessageMockUtil.mockMessage;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SocialNetworkPresenterTest {
 
     @Mock
     private SocialNetworkContract.View view;
-    @Mock
-    private DateProvider dateProvider;
+
+    private DateProvider dateProvider = DateProviderMockUtil.eachInvocationIsIncrementedByMs(1000);
 
     @Captor
     private ArgumentCaptor<List<Message>> messagesListCaptor;
@@ -37,21 +37,11 @@ public class SocialNetworkPresenterTest {
 
     @Before
     public void createSocialNetwork() {
-        //each time it is indicated responds with 1 seconds more
-        when(dateProvider.now()).thenAnswer(new Answer<Date>() {
-            private int nInvocations = 0;
-
-            @Override
-            public Date answer(InvocationOnMock invocation) throws Throwable {
-                return new Date(nInvocations++ * 1000);
-            }
-        });
-
         socialNetwork = new SocialNetworkPresenter(view, dateProvider);
     }
 
     @Test
-    public void aPublishingMessageIsRerunInTheShowUser() {
+    public void aPublishingMessageIsDisplayInTheShowUser() {
         String user = "userA";
         String message = "message";
 
@@ -60,9 +50,7 @@ public class SocialNetworkPresenterTest {
 
         verify(view).displayUserMessages(messagesListCaptor.capture());
 
-        Message publishedMsg = messagesListCaptor.getValue().get(0);
-        assertEquals(user, publishedMsg.getAuthor().getName());
-        assertEquals(message, publishedMsg.getContent());
+        assertThat(messagesListCaptor.getValue(),containsMessageWith(user,message));
     }
 
     @Test
@@ -112,11 +100,6 @@ public class SocialNetworkPresenterTest {
 
     }
 
-    private Message mockMessage(Date publishingDate) {
-        Message msg = mock(Message.class);
-        when(msg.getPublicisingTime()).thenReturn(publishingDate);
-        return msg;
-    }
 
     @Test
     public void returnTrueIfTheMessageAreOrderedByDescendingDate() {

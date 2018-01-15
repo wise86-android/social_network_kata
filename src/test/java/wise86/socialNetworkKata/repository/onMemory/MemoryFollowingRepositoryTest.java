@@ -6,17 +6,16 @@ import wise86.socialNetworkKata.repository.FollowingRepository;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
+import static wise86.socialNetworkKata.testUtil.UserMockUtil.mockUserWithName;
 
 public class MemoryFollowingRepositoryTest {
 
-    private static final User USER_A = new User("UserA");
-    private static final User USER_B = new User("UserB");
-    private static final User USER_C = new User("UserC");
+    private static final User USER_A = mockUserWithName("UserA");
+    private static final User USER_B = mockUserWithName("UserB");
+    private static final User USER_C = mockUserWithName("UserC");
 
     private FollowingRepository repository = new MemoryFollowingRepository();
 
@@ -25,7 +24,7 @@ public class MemoryFollowingRepositoryTest {
     public void aFallingRelationCanBeAddAndRetrieved() {
         repository.addFollowingRelation(USER_A, USER_B);
         List<User> followedByA = repository.getUsersFollowedBy(USER_A);
-        assertThat(followedByA, is(not(empty())));
+        assertThat(followedByA, hasSize(1));
 
         assertThat(followedByA, contains(USER_B));
     }
@@ -35,7 +34,7 @@ public class MemoryFollowingRepositoryTest {
         repository.addFollowingRelation(USER_A, USER_B);
         repository.addFollowingRelation(USER_A, USER_C);
         List<User> followedByA = repository.getUsersFollowedBy(USER_A);
-        assertThat(followedByA, is(not(empty())));
+        assertThat(followedByA, hasSize(2));
 
         assertThat(followedByA, contains(USER_B, USER_C));
     }
@@ -48,7 +47,7 @@ public class MemoryFollowingRepositoryTest {
         repository.addFollowingRelation(USER_C, USER_A);
 
         List<User> followedByB = repository.getUsersFollowedBy(USER_B);
-        assertThat(followedByB, is(not(empty())));
+        assertThat(followedByB, hasSize(1));
 
         assertThat(followedByB, contains(USER_C));
     }

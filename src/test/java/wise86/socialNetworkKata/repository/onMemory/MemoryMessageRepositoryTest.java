@@ -10,18 +10,17 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static wise86.socialNetworkKata.testUtil.UserMockUtil.mockUserWithName;
 
 public class MemoryMessageRepositoryTest {
 
-    private static final User USER_A = new User("userA");
-    private static final User USER_B = new User("userB");
+    private static final User USER_A = mockUserWithName("userA");
+    private static final User USER_B = mockUserWithName("userB");
     private static final Date FAKE_DATE = mock(Date.class);
 
     private MessageRepository repository;
@@ -38,7 +37,7 @@ public class MemoryMessageRepositoryTest {
         repository.addMessage(msg);
 
         List<Message> messages = repository.getUserMessages(USER_A);
-        assertThat(messages, is(not(empty())));
+        assertThat(messages, hasSize(1));
 
         assertEquals(msg, messages.get(0));
     }
