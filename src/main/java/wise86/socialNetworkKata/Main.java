@@ -1,7 +1,8 @@
-import wise86.socialNetworkKata.SocialNetworkConsole;
+package wise86.socialNetworkKata;
+
 import wise86.socialNetworkKata.util.DateProvider;
 
-public class SocialNetworkMain {
+public class Main {
 
     public static void main(String args[]) {
         DateProvider dateProvider = new DateProvider();
